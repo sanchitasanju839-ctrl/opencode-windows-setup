@@ -1,0 +1,153 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // === Models ===
+  "model": "opencode/big-pickle",
+  "small_model": "opencode/north-mini-code-free",
+  "autoupdate": true,
+
+  // === TUI ===
+  "tui": {
+    "scroll_acceleration": {
+      "enabled": true
+    }
+  },
+
+  // === Language Servers ===
+  "lsp": {
+    "typescript": { "command": ["npx", "-y", "typescript-language-server", "--stdio"], "extensions": [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts"] },
+    "python": { "command": ["pylsp"], "extensions": [".py"] },
+    "gopls": { "command": ["gopls"], "extensions": [".go"] },
+    "rust-analyzer": { "command": ["rust-analyzer"], "extensions": [".rs"] },
+    "clangd": { "command": ["clangd"], "extensions": [".c", ".cpp", ".h", ".hpp", ".cxx", ".hxx"] },
+    "java": { "command": ["jdtls"], "extensions": [".java"] },
+    "yaml": { "command": ["npx", "-y", "yaml-language-server", "--stdio"], "extensions": [".yaml", ".yml"] },
+    "json": { "command": ["npx", "-y", "vscode-json-languageserver", "--stdio"], "extensions": [".json", ".jsonc"] },
+    "sql": { "command": ["npx", "-y", "sql-language-server", "--stdio"], "extensions": [".sql"] },
+    "sqls": { "command": ["sqls"], "extensions": [".sql"] },
+    "markdown": { "command": ["npx", "-y", "marksman"], "extensions": [".md", ".mdx"] },
+    "css": { "command": ["npx", "-y", "vscode-css-languageserver", "--stdio"], "extensions": [".css", ".scss", ".less", ".sass"] },
+    "html": { "command": ["npx", "-y", "vscode-html-languageserver", "--stdio"], "extensions": [".html", ".htm", ".xhtml"] },
+    "dockerfile": { "command": ["npx", "-y", "dockerfile-language-server", "--stdio"], "extensions": ["Dockerfile", ".dockerfile"] },
+    "bash": { "command": ["npx", "-y", "bash-language-server", "start"], "extensions": [".sh", ".bash", ".zsh"] },
+    "toml": { "command": ["npx", "-y", "taplo"], "extensions": [".toml"] },
+    "graphql": { "command": ["npx", "-y", "graphql-language-service-server", "--stdio"], "extensions": [".graphql", ".gql"] },
+    "tailwindcss": { "command": ["npx", "-y", "@tailwindcss/language-server", "--stdio"], "extensions": [".css", ".scss", ".postcss"] },
+    "terraform": { "command": ["terraform-ls", "serve"], "extensions": [".tf", ".tfvars", ".hcl"] },
+    "powershell": { "command": ["pwsh", "-NoLogo", "-NoProfile", "-Command", "Start-EditorServices"], "extensions": [".ps1", ".psm1", ".psd1", ".ps1xml"] }
+  },
+
+  // === Plugins ===
+  "plugin": [
+    "opencode-browser",
+    "opencode-power-pack@git+https://github.com/waybarrios/opencode-power-pack.git"
+  ],
+
+  // === Formatters ===
+  "formatter": {
+    "biome": {
+      "command": ["npx", "biome", "format", "--write", "$FILE"],
+      "extensions": [".js", ".jsx", ".ts", ".tsx", ".json", ".jsonc"]
+    },
+    "prettier": {
+      "command": ["npx", "-y", "prettier", "--stdin-filepath", "${file}"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx", ".json", ".jsonc", ".yaml", ".yml", ".md", ".css", ".scss", ".html"]
+    }
+  },
+
+  // === Permissions ===
+  "permission": {
+    "read": {
+      ".env": "allow",
+      ".env.*": "allow",
+      ".env-*": "allow"
+    },
+    "external_directory": "allow",
+    "bash": {
+      "git push": "allow",
+      "git push *": "allow",
+      "sudo *": "deny",
+      "rm -rf /": "deny",
+      "rm -rf /*": "deny",
+      "rm -rf ~": "deny",
+      "rm -rf ~/*": "deny",
+      ":(){:|:&};:": "deny"
+    },
+    "skill": {
+      "*": "allow"
+    }
+  },
+
+  // === MCP Servers ===
+  "mcp": {
+    "next-devtools": { "type": "local", "command": ["npx", "-y", "next-devtools-mcp@latest"] },
+    "chrome-devtools": { "type": "local", "command": ["npx", "-y", "chrome-devtools-mcp@latest"] },
+    "context7": { "type": "remote", "url": "https://mcp.context7.com/mcp" },
+    "fetch": { "type": "local", "command": ["npx", "-y", "mcp-fetch-server"], "enabled": true, "timeout": 60000 },
+    "playwright": { "type": "local", "command": ["npx", "-y", "@playwright/mcp@latest"], "enabled": true, "environment": { "BROWSER": "chromium" }, "timeout": 120000 },
+    "git": { "type": "local", "command": ["npx", "-y", "@cyanheads/git-mcp-server"], "enabled": true, "timeout": 60000 },
+    "security-audit": { "type": "local", "command": ["npx", "-y", "mcp-security-audit"], "enabled": true, "timeout": 60000 },
+    "npm-package-docs": { "type": "local", "command": ["npx", "-y", "meanands/npm-package-docs-mcp"], "enabled": true, "timeout": 60000 },
+    "tailwindcss": { "type": "local", "command": ["npx", "-y", "tailwindcss-mcp-server"], "enabled": true, "timeout": 60000 },
+    "github": { "type": "local", "command": ["npx", "-y", "@modelcontextprotocol/server-github"], "enabled": true, "environment": { "GITHUB_TOKEN": "{env:GITHUB_TOKEN}" }, "timeout": 60000 },
+    "filesystem": { "type": "local", "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "."], "enabled": true, "timeout": 60000 },
+    "sqlite": { "type": "local", "command": ["npx", "-y", "@modelcontextprotocol/server-sqlite", "~/opencode-skills/data.db"], "enabled": true, "timeout": 60000 },
+    "web-search": { "type": "local", "command": ["npx", "-y", "@zhafron/mcp-web-search"], "enabled": true, "timeout": 60000 },
+    "memory": { "type": "local", "command": ["npx", "-y", "@modelcontextprotocol/server-memory"], "enabled": true, "timeout": 60000 },
+    "sequential-thinking": { "type": "local", "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"], "enabled": true, "timeout": 60000 },
+    "redis": { "type": "local", "command": ["npx", "-y", "@modelcontextprotocol/server-redis", "redis://localhost:6379"], "enabled": true, "timeout": 60000 },
+    "puppeteer": { "type": "local", "command": ["npx", "-y", "@modelcontextprotocol/server-puppeteer"], "enabled": true, "environment": { "PUPPETEER_LAUNCH_OPTIONS": "{ \"executablePath\": \"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe\", \"headless\": true }", "ALLOW_DANGEROUS": "true" }, "timeout": 300000 },
+    "postgres": { "type": "local", "command": ["npx", "-y", "@modelcontextprotocol/server-postgres", "postgresql://localhost:5432/mydb"], "enabled": true, "timeout": 60000 },
+    "opencode-docs": { "type": "local", "command": ["npx", "-y", "opencode-docs-mcp"], "enabled": true, "timeout": 120000 },
+    "lighthouse": { "type": "local", "command": ["npx", "-y", "lighthouse-mcp"], "enabled": true, "timeout": 300000 },
+    "a11y": { "type": "local", "command": ["npx", "-y", "a11y-mcp-server"], "enabled": true, "timeout": 300000 },
+    "cypress": { "type": "local", "command": ["npx", "-y", "cypress-mcp", "--cwd", "."], "enabled": true, "timeout": 600000 },
+    "storybook": { "type": "local", "command": ["npx", "-y", "storybook-mcp@latest"], "enabled": true, "environment": { "STORYBOOK_URL": "https://your-storybook.com/index.json" }, "timeout": 120000 },
+    "stylelint": { "type": "local", "command": ["npx", "-y", "stylelint-mcp@latest"], "enabled": true, "timeout": 60000 },
+    "core-web-vitals": { "type": "local", "command": ["npx", "-y", "@neel_thakkar/core-web-vitals-mcp"], "enabled": true, "timeout": 300000 },
+    "paperplain": { "type": "local", "command": ["npx", "-y", "paperplain-mcp"], "enabled": true, "timeout": 120000 },
+    "google-trends": { "type": "local", "command": ["npx", "-y", "@andrewlwn77/google-trends-mcp"], "enabled": true, "timeout": 60000 },
+    "wikipedia": { "type": "local", "command": ["npx", "-y", "wikipedia-mcp"], "enabled": true, "timeout": 60000 },
+    "browsermcp": { "type": "local", "command": ["npx", "-y", "@browsermcp/mcp@0.1.3"], "enabled": true, "timeout": 120000 },
+    "evozim-humanizer": { "type": "remote", "url": "https://ai-humanizer-mcp.vercel.app/api/mcp", "enabled": true },
+    "local-humanizer": { "type": "local", "command": ["humanizer", "humanize", "--autofix"], "enabled": true }
+  },
+
+  // === Agent Overrides ===
+  "agent": {
+    "build": { "temperature": 0.3 },
+    "plan": {
+      "model": "opencode/big-pickle",
+      "temperature": 0.1,
+      "tools": { "write": false, "edit": false, "patch": false },
+      "permission": {
+        "bash": {
+          "git status": "allow", "git diff*": "allow", "git log*": "allow", "git show*": "allow",
+          "bd *": "allow", "rg *": "allow", "tree *": "allow", "wc *": "allow", "head *": "allow", "tail *": "allow",
+          "pnpm exec tsc*": "allow", "pnpm run lint*": "allow", "pnpm test*": "allow",
+          "*": "deny"
+        }
+      }
+    },
+    "security": {
+      "model": "opencode/big-pickle", "temperature": 0.1,
+      "tools": { "write": false, "edit": false, "patch": false },
+      "description": "Security auditor - scans for vulnerabilities using Snyk tools. Read-only."
+    },
+    "test-writer": {
+      "model": "opencode/big-pickle", "temperature": 0.2,
+      "permission": { "write": { "**/*.test.ts": "allow", "**/*.spec.ts": "allow", "**/*.test.tsx": "allow", "**/*.spec.tsx": "allow", "*": "deny" } },
+      "description": "Test specialist - generates comprehensive test suites. Can only write to test files."
+    },
+    "docs": {
+      "model": "opencode/big-pickle", "temperature": 0.3,
+      "permission": { "write": { "**/*.md": "allow", "**/*.mdx": "allow", "*": "deny" } },
+      "description": "Documentation writer - generates markdown docs, READMEs, guides. Only writes to .md/.mdx files."
+    }
+  },
+
+  // === Experimental ===
+  "experimental": {
+    "mcp_timeout": 300000
+  }
+}
