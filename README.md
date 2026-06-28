@@ -96,6 +96,26 @@ opencode-windows-setup/
 
 ## Troubleshooting
 
+**Compaction stuck/hanging?** The `plugin/swarm.ts` registers an `experimental.session.compacting` hook that injects ~9KB of swarm coordination context during compaction. This breaks compaction with `opencode/big-pickle` (free tier — upstream issues #27758, #26220, #30443). Fix: open `plugin/swarm.ts`, find the `"experimental.session.compacting"` handler, and replace it with a no-op:
+
+```typescript
+"experimental.session.compacting": async (
+  _input: { sessionID: string },
+  _output: CompactionOutput,
+): Promise<void> => {
+  // no-op — avoid injecting swarm context during compaction
+},
+```
+
+Alternatively, disable auto-compaction in `config/opencode.jsonc`:
+```jsonc
+"compaction": {
+  "auto": false,
+  "prune": true,
+  "reserved": 80000
+}
+```
+
 **Plugin not loading?** Run `opencode --pure` to check if a plugin is causing issues, then run `opencode debug info` to see loaded plugins.
 
 **Model not found?** Run `opencode models` to list available models, then update `model` in `config/opencode.jsonc`.
